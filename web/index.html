@@ -19,6 +19,7 @@
   <div class="hud-meta">
     <span class="kv">_ EPOCH: <span id="clock">--:--:--</span></span>
     <span class="kv">_ TARGET: <span id="osc-target">127.0.0.1:7000</span></span>
+    <span class="kv mic-block">_ MIC <span class="mic-meter" id="mic-meter"></span></span>
     <span class="kv status" id="status"><span class="dot"></span>IDLE</span>
   </div>
 </header>
@@ -59,6 +60,10 @@
           <label>_ LLM_ADDR</label>
           <input type="text" id="llm-addr" value="/llm" />
         </div>
+      </div>
+      <div class="row">
+        <label>_ MIC_INPUT</label>
+        <select id="mic-select"><option value="">(default)</option></select>
       </div>
     </div>
   </section>

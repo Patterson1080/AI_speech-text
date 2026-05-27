@@ -32,12 +32,13 @@ LLM_MODEL = "gemini-3.5-flash"
 WEB_DIR = Path(__file__).parent / "web"
 CONFIG_PATH = Path(__file__).parent / "config.json"
 DEFAULT_CONFIG = {
-    "api_key":       "",
-    "osc_host":      "127.0.0.1",
-    "osc_port":      7000,
-    "stt_address":   "/stt",
-    "llm_address":   "/llm",
-    "system_prompt": "",
+    "api_key":         "",
+    "osc_host":        "127.0.0.1",
+    "osc_port":        7000,
+    "stt_address":     "/stt",
+    "llm_address":     "/llm",
+    "system_prompt":   "",
+    "input_device_id": "",
 }
 
 
@@ -61,6 +62,7 @@ class ConfigBody(BaseModel):
     stt_address: str = "/stt"
     llm_address: str = "/llm"
     system_prompt: str = ""
+    input_device_id: str = ""
 
 
 _EPA_META = re.compile(
