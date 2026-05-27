@@ -380,6 +380,23 @@ function finalize() {
   setStatus("IDLE");
 }
 
+// ---------- color theme switcher ----------
+
+const THEME_KEY = "stochastic-jue:theme";
+
+function applyTheme(t) {
+  if (t) document.body.setAttribute("data-theme", t);
+  else    document.body.removeAttribute("data-theme");
+  document.querySelectorAll(".theme-btn").forEach(b =>
+    b.classList.toggle("active", (b.dataset.theme || "") === (t || ""))
+  );
+  localStorage.setItem(THEME_KEY, t || "");
+}
+
+document.querySelectorAll(".theme-btn").forEach(b =>
+  b.addEventListener("click", () => applyTheme(b.dataset.theme || ""))
+);
+
 // ---------- wiring ----------
 
 els.toggleBtn.addEventListener("click", () => listening ? stop() : start());
@@ -408,6 +425,8 @@ setInterval(() => {
 
 // init
 (async function init() {
+  // restore theme before anything renders visibly
+  applyTheme(localStorage.getItem(THEME_KEY) || "");
   buildMicMeter();
   await refreshMicList();
   const cfg = (await loadCfg()) || {};
