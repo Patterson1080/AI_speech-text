@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stochastic Jue</title>
+<link rel="stylesheet" href="/web/style.css" />
+</head>
+<body class="boot">
+
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<header class="hud-header">
+  <div class="hud-title">
+    <span class="brand">Stochastic Jue</span>
+    <span class="byline">app made by Metaesthetica</span>
+  </div>
+  <div class="hud-meta">
+    <span class="kv">_ EPOCH: <span id="clock">--:--:--</span></span>
+    <span class="kv">_ TARGET: <span id="osc-target">127.0.0.1:7000</span></span>
+    <span class="kv status" id="status"><span class="dot"></span>IDLE</span>
+  </div>
+</header>
+
+<main class="workspace">
+
+  <!-- ============ NODE: CONFIG ============ -->
+  <section class="node node-config" data-node="config">
+    <div class="node-corner tl">┌</div><div class="node-corner tr">┐</div>
+    <div class="node-corner bl">└</div><div class="node-corner br">┘</div>
+    <div class="node-header">
+      <span class="port port-in"></span>
+      <span class="node-id">[01]</span>
+      <span class="node-type">CONFIG</span>
+      <span class="node-sub">credentials &amp; routing</span>
+    </div>
+    <div class="node-body">
+      <div class="row">
+        <label>_ GOOGLE_API_KEY</label>
+        <input type="password" id="api-key" placeholder="AIza..." />
+      </div>
+      <div class="row split">
+        <div>
+          <label>_ OSC_HOST</label>
+          <input type="text" id="osc-host" value="127.0.0.1" />
+        </div>
+        <div>
+          <label>_ OSC_PORT</label>
+          <input type="text" id="osc-port" value="7000" />
+        </div>
+      </div>
+      <div class="row split">
+        <div>
+          <label>_ STT_ADDR</label>
+          <input type="text" id="stt-addr" value="/stt" />
+        </div>
+        <div>
+          <label>_ LLM_ADDR</label>
+          <input type="text" id="llm-addr" value="/llm" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NODE: SYSTEM PROMPT ============ -->
+  <section class="node node-prompt" data-node="prompt">
+    <div class="node-corner tl">┌</div><div class="node-corner tr">┐</div>
+    <div class="node-corner bl">└</div><div class="node-corner br">┘</div>
+    <div class="node-header">
+      <span class="port port-in"></span>
+      <span class="node-id">[02]</span>
+      <span class="node-type">SYSTEM_PROMPT</span>
+      <span class="node-sub">prepended → LLM</span>
+      <span class="port port-out"></span>
+    </div>
+    <div class="node-body">
+      <textarea id="system-prompt" spellcheck="false"></textarea>
+    </div>
+  </section>
+
+  <!-- ============ NODE: STT ============ -->
+  <section class="node node-stt" data-node="stt">
+    <div class="node-corner tl">┌</div><div class="node-corner tr">┐</div>
+    <div class="node-corner bl">└</div><div class="node-corner br">┘</div>
+    <div class="node-header">
+      <span class="port port-in"></span>
+      <span class="node-id">[03]</span>
+      <span class="node-type">STT</span>
+      <span class="node-sub">gemini-3.1-flash-live → /stt</span>
+      <span class="port port-out active"></span>
+    </div>
+    <div class="node-body">
+      <pre id="stt-out" class="stream">&gt; awaiting input...</pre>
+    </div>
+  </section>
+
+  <!-- ============ NODE: LLM ============ -->
+  <section class="node node-llm" data-node="llm">
+    <div class="node-corner tl">┌</div><div class="node-corner tr">┐</div>
+    <div class="node-corner bl">└</div><div class="node-corner br">┘</div>
+    <div class="node-header">
+      <span class="port port-in"></span>
+      <span class="node-id">[04]</span>
+      <span class="node-type">LLM</span>
+      <span class="node-sub">gemini-3.5-flash → /llm</span>
+      <span class="port port-out active"></span>
+    </div>
+    <div class="node-body">
+      <pre id="llm-out" class="stream">&gt; awaiting input...</pre>
+    </div>
+  </section>
+
+</main>
+
+<footer class="hud-footer">
+  <div class="log" id="log">_ READY.</div>
+  <div class="actions">
+    <button class="btn btn-ghost" id="save-btn">SAVE LAYOUT &amp; CFG</button>
+  </div>
+</footer>
+
+<button class="listen-btn" id="listen-btn-float" title="Drag to move · Click to toggle">
+  <span class="listen-ring"></span>
+  <span class="listen-ring-2"></span>
+  <span class="listen-glyph" id="listen-glyph">▶</span>
+  <span class="listen-label" id="listen-label">START</span>
+</button>
+
+<script src="/web/window-manager.js"></script>
+<script src="/web/app.js"></script>
+</body>
+</html>
