@@ -336,7 +336,9 @@ function handleServer(m) {
       const scenes = (m.scenes && m.scenes.length) ? m.scenes : null;
       els.llmOut.textContent = scenes ? scenes.join("\n\n") : (m.text || "");
       const n = scenes ? scenes.length : 0;
-      setLog(`_ LLM → ${readForm().llm_address}  (${n} scene prompt${n === 1 ? "" : "s"})`, "ok");
+      const base = readForm().llm_address.replace(/\/$/, "");
+      const range = n > 0 ? `${base}/1..${n}` : base;
+      setLog(`_ LLM → ${range}  (${n} scene prompt${n === 1 ? "" : "s"})`, "ok");
       break;
     }
     case "done":

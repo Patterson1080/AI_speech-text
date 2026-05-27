@@ -220,9 +220,13 @@ class Bridge:
             # Push to UI: full response + isolated scenes.
             await self.send_event("llm", text=text, scenes=scenes)
 
-            # OSC out: only the 4 scene prompts (as multiple args under /llm).
+            # OSC out: send each scene to its own indexed address so TD
+            # naturally replaces the previous value in-place instead of
+            # accumulating. e.g. /llm/1, /llm/2, /llm/3, /llm/4
+            base = self.cfg["llm_address"].rstrip("/")
             payload = scenes if scenes else [text]
-            self.osc.send_message(self.cfg["llm_address"], payload)
+            for i, scene in enumerate(payload, 1):
+                self.osc.send_message(f"{base}/{i}", scene)
         except Exception as e:
             log.exception("llm failed")
             await self.send_event("error", text=f"LLM: {type(e).__name__}: {e}")

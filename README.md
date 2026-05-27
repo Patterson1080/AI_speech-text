@@ -70,10 +70,20 @@ Then open <http://localhost:8765>. The first time you launch:
 
 ## OSC schema
 
-| Address | Args                                   | Sent when            |
-|---------|----------------------------------------|----------------------|
-| `/stt`  | `string`                               | After STOP, before LLM call. The full transcript. |
-| `/llm`  | `string, string, string, string`       | After LLM returns. Four scene-description prompts. |
+| Address   | Args     | Sent when            |
+|-----------|----------|----------------------|
+| `/stt`    | `string` | After STOP, before LLM call. The full transcript. |
+| `/llm/1`  | `string` | After LLM returns. Flourishing forest scene prompt. |
+| `/llm/2`  | `string` | After LLM returns. Decaying forest scene prompt. |
+| `/llm/3`  | `string` | After LLM returns. Microscopic cellular scene prompt. |
+| `/llm/4`  | `string` | After LLM returns. Cosmic-scale scene prompt. |
+
+Each scene is sent to its **own address** rather than as four args of a single
+`/llm` message — this makes TD's `OSC In DAT` / `OSC In CHOP` replace the
+previous value in-place instead of accumulating across analyses.
+
+If you set `llm_address` to something other than `/llm`, the suffixes (`/1`
+through `/4`) are appended to whatever you set, e.g. `/scenes/1`, `/scenes/2`, ...
 
 ## Configuration
 
