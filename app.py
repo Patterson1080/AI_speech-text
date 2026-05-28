@@ -207,9 +207,9 @@ class Bridge:
         await self.send_event("status", text="ANALYZING")
         try:
             sys_prompt = (self.cfg.get("system_prompt") or "").strip()
-            gen_cfg = (
-                types.GenerateContentConfig(system_instruction=sys_prompt)
-                if sys_prompt else None
+            gen_cfg = types.GenerateContentConfig(
+                max_output_tokens=77,
+                **({"system_instruction": sys_prompt} if sys_prompt else {}),
             )
             resp = await self.client.aio.models.generate_content(
                 model=LLM_MODEL, contents=transcript, config=gen_cfg,

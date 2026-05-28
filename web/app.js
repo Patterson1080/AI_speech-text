@@ -1,47 +1,16 @@
 // TD-SPK-TXT front-end controller.
 // Captures mic at 16 kHz, streams PCM to /ws, renders updates back into the UI.
 
-const DEFAULT_SYSTEM_PROMPT = `You are now acting as a semantic-affective analysis tool using Osgood's Semantic Differential (EPA) model, followed by a visual scene description generator for a diffusion-based image model.
+const DEFAULT_SYSTEM_PROMPT = `You are a semantic-affective image prompt generator for a diffusion model.
 
-For any input sentence or phrase, follow these steps:
+For any input phrase, silently analyze its emotional tone using Osgood's EPA (Evaluation, Potency, Activity) model, then generate a single vivid diffusion prompt that embodies that affective signature.
 
-Step 1: EPA Analysis
-Break the sentence into actor, behavior, and object (if applicable).
-Assign Evaluation (E), Potency (P), and Activity (A) scores to each component on a scale from -3 to +3.
-Then compute a composite EPA score for the overall input.
-Briefly interpret the emotional tone based on the EPA analysis.
+The prompt must:
+- Be one rich, descriptive sentence of approximately 77 tokens
+- Draw on natural, biological, or cosmic imagery
+- Be guided by a relevant complexity pattern (phyllotaxis, Voronoi tessellation, percolation, spiral arms, erosion networks, L-systems, etc.) that shapes structure without dominating the scene
 
-Step 2: Generate Four Diffusion Prompts
-Using the EPA affective tone and semantic meaning from Step 1, generate four distinct prompts for a diffusion-based image generation model:
-- A flourishing forest scene - vibrant, alive, and expansive
-- A decaying forest scene - still natural, but entropic, fragile, or broken
-- A microscopic cellular scene - biological, structural, and dynamic
-- A cosmic-scale scene - astronomical, universal, or cosmogenic
-
-Each prompt must:
-- Be one vivid sentence with detailed natural or cosmological imagery
-- Be guided by a relevant complexity pattern that influences form (e.g., phyllotaxis, percolation, Voronoi tessellations, spiral arms, erosion networks, L-systems, etc.)
-- Use the pattern to suggest structural logic or growth, but not be the subject itself
-- Reflect the same EPA affective signature across all four scenes
-
-Do not list or number the prompts. Just write four richly descriptive sentences, each grounded in one of the four scene categories above.
-
-Output Format:
-Input: [original sentence]
-
-Actor: ...
-Behavior: ...
-Object(s): ...
-
-Composite EPA - E: x, P: x, A: x
-Short explanation: ...
-
-[Flourishing forest scene prompt]
-[Decaying forest scene prompt]
-[Cellular scene prompt]
-[Cosmic scene prompt]
-
-Do not include triple backticks or numbered lines. Ensure each scene is emotionally consistent with the EPA tone and uses complexity patterns to enhance - not dominate - the imagery.`;
+Output only the prompt. No analysis, no labels, no extra punctuation.`;
 
 const els = {
   apiKey:    document.getElementById("api-key"),
@@ -337,8 +306,8 @@ function handleServer(m) {
       els.llmOut.textContent = scenes ? scenes.join("\n\n") : (m.text || "");
       const n = scenes ? scenes.length : 0;
       const base = readForm().llm_address.replace(/\/$/, "");
-      const range = n > 0 ? `${base}/1..${n}` : base;
-      setLog(`_ LLM → ${range}  (${n} scene prompt${n === 1 ? "" : "s"})`, "ok");
+      const addr = n === 1 ? `${base}/1` : n > 1 ? `${base}/1..${n}` : base;
+      setLog(`_ LLM → ${addr}  (${n} scene prompt${n === 1 ? "" : "s"})`, "ok");
       break;
     }
     case "done":
