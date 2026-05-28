@@ -585,28 +585,29 @@ body.boot { animation: boot-in 700ms steps(8, end) 1; }
    =================================================================== */
 
 .theme-picker {
-  display: flex;
-  gap: 5px;
+  display: inline-flex;
   align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
 }
 .theme-btn {
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--line);
+  width: 4px;
+  height: 12px;
+  border: none;
   background: var(--c, #4488ff);
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: transform 110ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  transition: transform 110ms ease, box-shadow 120ms ease;
 }
 .theme-btn:hover {
-  transform: scale(1.18);
-  box-shadow: 0 0 10px var(--c, #4488ff);
-  border-color: var(--dim);
+  transform: scaleY(1.2);
+  box-shadow: 0 0 6px var(--c, #4488ff);
 }
 .theme-btn.active {
-  border: 2px solid var(--text);
-  box-shadow: 0 0 0 1px var(--c, #4488ff), 0 0 10px var(--c, #4488ff);
+  box-shadow: 0 0 0 1px var(--text), 0 0 8px var(--c, #4488ff);
 }
 
 /* ===================================================================
